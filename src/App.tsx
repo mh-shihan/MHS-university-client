@@ -1,8 +1,11 @@
+import MainLayout from './components/layout/MainLayout';
+import ProtectedRoute from './components/layout/ProtectedRoute';
+
 function App() {
   return (
-    <>
-      <h1>MHS University Management System</h1>
-    </>
+    <ProtectedRoute>
+      <MainLayout />
+    </ProtectedRoute>
   );
 }
 
