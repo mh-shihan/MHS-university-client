@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, Row } from 'antd';
 import { type FieldValues } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
 import { verifyToken } from '../utils/verifyToken';
 import { useAppDispatch } from '../redux/hooks';
-import { setUser } from '../redux/features/auth/authSlice';
+import { setUser, type TUser } from '../redux/features/auth/authSlice';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import ReuseableForm from '../components/form/ReuseableForm';
@@ -41,16 +42,17 @@ const Login = () => {
       };
 
       const res = await login(userInfo).unwrap();
-      console.log(res);
-      const user = verifyToken(res.data.accessToken);
+      const user = verifyToken(res.data.accessToken) as TUser;
       dispatch(setUser({ user: user, token: res.data.accessToken }));
 
       toast.success('Logged In Successfully!', { id: toastId, duration: 2000 });
 
       navigate(from, { replace: true });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-      toast.error('Something went wrong!', { id: toastId });
+      toast.error('Something went wrong!', {
+        id: toastId,
+        duration: 2000,
+      });
     }
   };
 
