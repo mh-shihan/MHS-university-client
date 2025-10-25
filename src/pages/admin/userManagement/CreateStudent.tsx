@@ -1,37 +1,42 @@
-import { Button, Col, Divider, Form, Input, Row } from 'antd';
+import { Button, Col, Divider, Row } from 'antd';
 import ReusableSelect from '../../../components/form/ReusableSelect';
 import ReusableForm from '../../../components/form/ReusableForm';
 import ReuseableInput from '../../../components/form/ReusableInput';
 import ReusableDatePicker from '../../../components/form/ReusableDatePicker';
-import { Controller, type FieldValues } from 'react-hook-form';
+import { type FieldValues } from 'react-hook-form';
 import { bloodGroupOptions, genderOptions } from '../../../constants';
 import {
   useGetAcademicDepartmentsQuery,
   useGetAllAcademicSemesterQuery,
 } from '../../../redux/features/admin/academicManagement.api';
+import { useAddStudentMutation } from '../../../redux/features/admin/userManagement.api';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { studentManagementSchema } from '../../../schemas';
+import InputFile from '../../../components/form/InputFile';
 
 //! Default Value
 const studentDefaultValues = {
   name: {
     firstName: 'I am ',
     middleName: 'Student',
-    lastName: 'Number 1',
+    lastName: 'Doe',
   },
   gender: 'male',
 
-  bloogGroup: 'A+',
+  bloodGroup: 'A+',
 
-  contactNo: '1235678',
+  email: 'mhs@mhs.com',
+  contactNo: '0171235678',
   emergencyContactNo: '987-654-3210',
   presentAddress: '123 Main St, Cityville',
   permanentAddress: '456 Oak St, Townsville',
 
   guardian: {
     fatherName: 'James Doe',
-    fatherOccupation: 'Engineer',
+    fatherDesignation: 'Engineer',
     fatherContactNo: '111-222-3333',
     motherName: 'Mary Doe',
-    motherOccupation: 'Teacher',
+    motherDesignation: 'Teacher',
     motherContactNo: '444-555-6666',
   },
 
@@ -42,14 +47,14 @@ const studentDefaultValues = {
     address: '789 Pine St, Villageton',
   },
 
-  admissionSemester: '65bb60ebf71fdd1add63b1c0',
-  academicDepartment: '65b4acae3dc8d4f3ad83e416',
+  admissionSemester: '68b724b176c7f510ee70cdc4',
+  academicDepartment: '68b7207dd6b074f6f7dfd02e',
 };
 
 const CreateStudent = () => {
-  // const [addStudent, { data, error }] = useAddStudentMutation();
+  const [addStudent, { data, error }] = useAddStudentMutation();
 
-  // console.log({ data, error });
+  console.log({ data, error });
 
   const { data: sData, isLoading: sIsLoading } =
     useGetAllAcademicSemesterQuery(undefined);
@@ -68,17 +73,19 @@ const CreateStudent = () => {
   }));
 
   const onSubmit = (data: FieldValues) => {
+    const { image, ...rest } = data;
     const studentData = {
       password: 'student123',
-      student: data,
+      student: rest,
     };
+    console.log(studentData);
 
     const formData = new FormData();
 
     formData.append('data', JSON.stringify(studentData));
-    formData.append('file', data.image);
+    formData.append('file', image);
 
-    // addStudent(formData);
+    addStudent(formData);
 
     //! This is for development
     //! Just for checking
@@ -88,7 +95,11 @@ const CreateStudent = () => {
   return (
     <Row justify="center">
       <Col span={24}>
-        <ReusableForm onSubmit={onSubmit} defaultValues={studentDefaultValues}>
+        <ReusableForm
+          onSubmit={onSubmit}
+          defaultValues={studentDefaultValues}
+          resolver={zodResolver(studentManagementSchema)}
+        >
           <Divider>Personal Info.</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
@@ -130,19 +141,7 @@ const CreateStudent = () => {
               />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <Controller
-                name="image"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <Form.Item label="Picture">
-                    <Input
-                      type="file"
-                      value={value?.fileName}
-                      {...field}
-                      onChange={e => onChange(e.target.files?.[0])}
-                    />
-                  </Form.Item>
-                )}
-              />
+              <InputFile name="image" />
             </Col>
           </Row>
           <Divider>Contact Info.</Divider>
@@ -187,8 +186,8 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <ReuseableInput
                 type="text"
-                name="guardian.fatherOccupation"
-                label="Father Occupation"
+                name="guardian.fatherDesignation"
+                label="Father Designation"
               />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
@@ -208,8 +207,8 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <ReuseableInput
                 type="text"
-                name="guardian.motherOccupation"
-                label="Mother Occupation"
+                name="guardian.motherDesignation"
+                label="Mother Designation"
               />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>

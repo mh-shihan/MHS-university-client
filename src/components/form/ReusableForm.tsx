@@ -37,7 +37,10 @@ const ReusableForm = ({
   const methods = useForm(formConfig);
 
   const submit = (data: FieldValues) => {
-    onSubmit(data);
+    const raw = methods.getValues();
+    const merged = { ...raw, ...data };
+
+    onSubmit(merged);
     methods.reset();
   };
 
