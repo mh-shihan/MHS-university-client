@@ -7,8 +7,8 @@ import { useAppDispatch } from '../redux/hooks';
 import { setUser, type TUser } from '../redux/features/auth/authSlice';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import ReuseableForm from '../components/form/ReuseableForm';
-import ReuseableInput from '../components/form/ReuseableInput';
+import ReusableInput from '../components/form/ReusableInput';
+import ReusableForm from '../components/form/ReusableForm';
 
 type TUserInfo = {
   id: string;
@@ -58,11 +58,11 @@ const Login = () => {
 
   return (
     <Row justify="center" align="middle" style={{ height: '100vh' }}>
-      <ReuseableForm onSubmit={onSubmit} defaultValues={defaultValues}>
-        <ReuseableInput type="text" name="userId" label="ID" />
-        <ReuseableInput type="text" name="password" label="Password" />
+      <ReusableForm onSubmit={onSubmit} defaultValues={defaultValues}>
+        <ReusableInput type="text" name="userId" label="ID" />
+        <ReusableInput type="text" name="password" label="Password" />
         <Button htmlType="submit">Login</Button>
-      </ReuseableForm>
+      </ReusableForm>
     </Row>
   );
 };

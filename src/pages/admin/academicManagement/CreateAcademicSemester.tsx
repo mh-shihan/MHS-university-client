@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ReusableSelect from '../../../components/form/ReusableSelect';
 import { Button, Col, Flex } from 'antd';
 import { monthOptions } from '../../../constants/global.constant';
-import ReusableForm from '../../../components/form/ReuseableForm';
+import ReusableForm from '../../../components/form/ReusableForm';
 import { toast } from 'sonner';
 import { semesterOptions } from '../../../constants/semester.constant';
 import type { FieldValues, SubmitHandler } from 'react-hook-form';

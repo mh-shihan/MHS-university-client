@@ -7,7 +7,7 @@ type TInputProps = {
   label?: string;
 };
 
-const ReuseableInput = ({ type, name, label }: TInputProps) => {
+const ReusableInput = ({ type, name, label }: TInputProps) => {
   return (
     <div style={{ marginBottom: '20px' }}>
       <Controller
@@ -22,4 +22,4 @@ const ReuseableInput = ({ type, name, label }: TInputProps) => {
   );
 };
 
-export default ReuseableInput;
+export default ReusableInput;

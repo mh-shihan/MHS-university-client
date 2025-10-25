@@ -4,10 +4,16 @@ import { Controller } from 'react-hook-form';
 type TReusableSelectProps = {
   label: string;
   name: string;
-  options: { value: string; label: string; disabled?: boolean }[];
+  options: { value: string; label: string; disabled?: boolean }[] | undefined;
+  disabled?: boolean;
 };
 
-const ReusableSelect = ({ label, name, options }: TReusableSelectProps) => {
+const ReusableSelect = ({
+  label,
+  name,
+  options,
+  disabled,
+}: TReusableSelectProps) => {
   return (
     <Controller
       name={name}
@@ -19,6 +25,7 @@ const ReusableSelect = ({ label, name, options }: TReusableSelectProps) => {
             {...field}
             options={options}
             size="large"
+            disabled={disabled}
           />
           {error && <small style={{ color: 'red' }}>{error.message}</small>}
         </Form.Item>
